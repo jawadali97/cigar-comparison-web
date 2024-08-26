@@ -1,0 +1,25 @@
+.packs-table {
+    /* font-family: arial, sans-serif; */
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.packs-tb-head {
+    background-color: #EEEEEE;
+}
+
+.packs-table td,
+th {
+    border: 1px dashed #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+strong {
+    color: #888;
+}
+
+/* .packs-tb-head th:nth-child(1) {
+    background-color: white;
+    border: none;
+} */

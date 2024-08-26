@@ -1,0 +1,44 @@
+import { Box, Card, Grid, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import ListItem from './ListItem'
+import PaginationComponent from '../Pagination'
+
+const ItemsList = ({ itemsList, page, totalPages, setPage, totalRecords, startItems }) => {
+
+    return (
+        <Box sx={{ background: 'white' }}>
+            <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                padding={{ xs: '0', md: '0 10%' }}
+            >
+                <Grid item xs={12}>
+                    <PaginationComponent
+                        page={page}
+                        totalPages={totalPages}
+                        setPage={setPage}
+                        totalRecords={totalRecords}
+                        startItems={startItems}
+                        endItems={startItems + itemsList.length}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    {itemsList.map(item => (<ListItem item={item} />))}
+                </Grid>
+                <Grid item xs={12} >
+                    <PaginationComponent
+                        page={page}
+                        totalPages={totalPages}
+                        setPage={setPage}
+                        totalRecords={totalRecords}
+                        startItems={startItems}
+                        endItems={startItems + itemsList.length}
+                    />
+                </Grid>
+            </Grid>
+        </Box>
+    )
+}
+
+export default ItemsList
