@@ -7,9 +7,6 @@ export class CigarController {
 
     constructor(private readonly cigarsService: CigarsService) { }
 
-    // searchCigar(@Query('query') query: string) {
-    //     return this.cigarsService.searchCigars(query);
-    // }
     @Get('search')
     async searchCigars(
         @Query('query') query: string,
@@ -17,6 +14,11 @@ export class CigarController {
         @Query('limit') limit: number = 20
     ): Promise<{ cigars: Cigar[], totalPages: number }> {
         return this.cigarsService.searchCigars(query, page, limit);
+    }
+
+    @Get('filters')
+    async getFilters() {
+        return this.cigarsService.getFilters();
     }
 
     @Get('suggestions')

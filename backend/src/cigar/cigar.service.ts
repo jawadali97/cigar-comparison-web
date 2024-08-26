@@ -93,13 +93,6 @@ export class CigarsService {
         // }
 
 
-        // {
-        //     $text: { $search: '\"flor de\"' },
-        //     // $meta: "textScore"
-        // }
-
-
-
         // const regexps = queryWords.map(word => new RegExp(word, 'i'));
         // Construct $and array with regex conditions
         // const regexConditions = queryWords.map(word => ({
@@ -117,23 +110,42 @@ export class CigarsService {
         // Construct search string for AND behavior
     }
 
+
+    async getFilters(): Promise<any> {
+        const uniqueAttributes = await this.cigarModel.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    brands: { $addToSet: '$brand' },
+                    // lengths: { $addToSet: '$length' },
+                    // rings: { $addToSet: '$ring' },
+                    // strengths: { $addToSet: '$strength' },
+                    origins: { $addToSet: '$origin' },
+                    shapes: { $addToSet: '$shape' },
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    brands: 1,
+                    // lengths: 1,
+                    // rings: 1,
+                    // strengths: 1,
+                    origins: 1,
+                    shapes: 1
+                }
+            }
+        ]).exec();
+
+        return uniqueAttributes[0];
+    }
+
     async getSuggestions(query: string): Promise<Cigar[]> {
         if (!query) {
             return [];
         }
 
         const queryWords = query.split(" ").map(word => word.trim()).filter(word => word);
-        // const regexps = queryWords.map(word => new RegExp(word, 'i'));
-
-        // Construct $and array with regex conditions
-        // const regexConditions = queryWords.map(word => ({
-        //     $or: [
-        //         { name: new RegExp(word, 'i') },
-        //         { brand: new RegExp(word, 'i') },
-        //         { shape: new RegExp(word, 'i') },
-        //     ]
-        // }));
-
         const searchString = queryWords.map(word => `\"${word}\"`).join(' ');
         const cigars = await this.cigarModel.find({
             $text: { $search: searchString }
