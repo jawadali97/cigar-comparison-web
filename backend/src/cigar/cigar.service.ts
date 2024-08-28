@@ -10,30 +10,29 @@ export class CigarsService {
     ) { }
 
 
-    async searchCigars(query: string, page: number, limit: number): Promise<{
+    async searchCigars(
+        query: string,
+        page: number,
+        limit: number,
+        filters: { brand?: string[], length?: string[], ring?: string[], strength?: string[], origin?: string[], shape?: string[] }
+    ): Promise<{
         cigars: Cigar[],
         totalPages: number,
         totalRecords: number,
         skip: number
     }> {
-        // if (!query) {
-        //     return [];
-        // }
-        // const queryWords = query.split(" ").map(word => word.trim()).filter(word => word);
-        // const searchString = queryWords.map(word => `\"${word}\"`).join(' ');
-        // const cigars = await this.cigarModel.find({
-        //     $text: { $search: searchString }
-        // }, { score: { $meta: "textScore" } })
-        //     .sort({ score: { $meta: "textScore" } })
-        //     .exec();
-        // return cigars;
 
-        // ==================================================
+        const criteria = {};
+        const skip = (page - 1) * limit >= 0 ? (page - 1) * limit : 0;
+        Object.keys(filters).forEach(key => {
+            if (filters[key] && filters[key].length > 0) {
+                criteria[key] = { $in: filters[key].map(value => new RegExp(`^${value}$`, 'i')) };
+            }
+        });
 
         if (!query) {
-            const skip = (page - 1) * limit >= 0 ? (page - 1) * limit : 0;
-            const totalRecords = await this.cigarModel.countDocuments({}).exec();
-            const cigars = await this.cigarModel.find({})
+            const totalRecords = await this.cigarModel.countDocuments(criteria).exec();
+            const cigars = await this.cigarModel.find(criteria)
                 .skip(skip)
                 .limit(limit)
                 .exec();
@@ -42,16 +41,14 @@ export class CigarsService {
             return { cigars, totalPages, totalRecords, skip };
         }
 
-        const queryWords = query.split(' ').map(word => word.trim()).filter(word => word);
-        const searchString = queryWords.map(word => `\"${word}\"`).join(' ');
-        const skip = (page - 1) * limit >= 0 ? (page - 1) * limit : 0;
-        const totalRecords = await this.cigarModel.countDocuments({
-            $text: { $search: searchString }
-        }).exec();
+        if (query) {
+            const queryWords = query.split(' ').map(word => word.trim()).filter(word => word);
+            const searchString = queryWords.map(word => `\"${word}\"`).join(' ');
+            criteria['$text'] = { $search: searchString };
+        }
 
-        const cigars = await this.cigarModel.find({
-            $text: { $search: searchString }
-        }, { score: { $meta: 'textScore' } })
+        const totalRecords = await this.cigarModel.countDocuments(criteria).exec();
+        const cigars = await this.cigarModel.find(criteria, { score: { $meta: 'textScore' } })
             .sort({ score: { $meta: 'textScore' } })
             .skip(skip)
             .limit(limit)
@@ -59,75 +56,36 @@ export class CigarsService {
 
         const totalPages = Math.ceil(totalRecords / limit);
         return { cigars, totalPages, totalRecords, skip };
-
-        // ===========================================
-
-        // const regex = new RegExp(query, 'i');
-        // return this.cigarModel.find({
-        //     $or: [
-        //         { name: regex },
-        //         { shape: regex },
-        //         { brand: regex },
-        //     ],
-        // }).exec();
-
-
-        // {
-        //     $and: [
-        //     {$or: [
-        // { name: RegExp('flor', 'i') },
-        // { brand: RegExp('flor', 'i') },
-        // { shape: RegExp('flor', 'i') },
-        // ]},
-        //     {$or: [
-        // { name:  RegExp('de las', 'i') },
-        // { brand:  RegExp('de las', 'i') },
-        // { shape:  RegExp('de las', 'i') },
-        // ]},
-        //     {$or: [
-        // { name:  RegExp('toro', 'i') },
-        // { brand:  RegExp('toro', 'i') },
-        // { shape:  RegExp('toro', 'i') },
-        // ]}
-        // ]
-        // }
-
-
-        // const regexps = queryWords.map(word => new RegExp(word, 'i'));
-        // Construct $and array with regex conditions
-        // const regexConditions = queryWords.map(word => ({
-        //     $or: [
-        //         { name: new RegExp(word, 'i') },
-        //         { brand: new RegExp(word, 'i') },
-        //         { shape: new RegExp(word, 'i') },
-        //     ]
-        // }));
-        // const regexConditions = queryWords.map(word => ({ name: new RegExp(word, 'i') }));
-        // const cigars = await this.cigarModel.find({
-        //     $and: regexConditions,
-        // }, { name: 1 }).exec();
-
-        // Construct search string for AND behavior
     }
 
 
     async getFilters(): Promise<any> {
         const uniqueAttributes = await this.cigarModel.aggregate([
             {
+                $project: {
+                    // brand_lower: { $toLower: '$brand' },
+                    // length_lower: { $toLower: '$length' },
+                    // ring_lower: { $toLower: '$ring' },
+                    // strength_lower: { $toLower: '$strength' },
+                    origin_lower: { $toLower: '$origin' },
+                    shape_lower: { $toLower: '$shape' },
+                }
+            },
+            {
                 $group: {
                     _id: null,
-                    brands: { $addToSet: '$brand' },
+                    // brands: { $addToSet: '$brand' },
                     // lengths: { $addToSet: '$length' },
                     // rings: { $addToSet: '$ring' },
                     // strengths: { $addToSet: '$strength' },
-                    origins: { $addToSet: '$origin' },
-                    shapes: { $addToSet: '$shape' },
+                    origins: { $addToSet: '$origin_lower' },
+                    shapes: { $addToSet: '$shape_lower' },
                 }
             },
             {
                 $project: {
                     _id: 0,
-                    brands: 1,
+                    // brands: 1,
                     // lengths: 1,
                     // rings: 1,
                     // strengths: 1,

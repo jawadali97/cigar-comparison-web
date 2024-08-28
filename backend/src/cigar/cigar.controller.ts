@@ -11,9 +11,16 @@ export class CigarController {
     async searchCigars(
         @Query('query') query: string,
         @Query('page') page: number = 1,
-        @Query('limit') limit: number = 20
+        @Query('limit') limit: number = 20,
+        @Query('brand') brand?: string[],
+        @Query('length') length?: string[],
+        @Query('ring') ring?: string[],
+        @Query('strength') strength?: string[],
+        @Query('origin') origin?: string[],
+        @Query('shape') shape?: string[]
     ): Promise<{ cigars: Cigar[], totalPages: number }> {
-        return this.cigarsService.searchCigars(query, page, limit);
+        const filters = { brand, length, ring, strength, origin, shape };
+        return this.cigarsService.searchCigars(query, page, limit, filters);
     }
 
     @Get('filters')

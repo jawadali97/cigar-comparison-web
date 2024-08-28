@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react"
 import './ProductsPage.css'
-import { Box, Typography } from "@mui/material";
+import { Box, selectClasses, Typography } from "@mui/material";
 import SearchBox from "./SearchBox";
 import ItemsList from "./ItemsList/ItemsList";
-import axios from "axios";
+import axiosInstance from "../services/axios";
+import { apiRoutes } from "../app.constants";
+import Filters from "./Filters";
 
 const ProductsPage = ({ }) => {
     const [products, setProducts] = useState([]);
@@ -12,14 +14,22 @@ const ProductsPage = ({ }) => {
     const [totalRecords, setTotalRecords] = useState(0);
     const [skipItems, setSkipItems] = useState(0);
     const [query, setQuery] = useState('');
+    const [selectedFilters, setSelectedFilters] = useState({
+        brand: [],
+        length: [],
+        ring: [],
+        strength: [],
+        origin: [],
+        shape: []
+    });
 
     useEffect(() => {
         fetchQueriedProducts(query);
-    }, [page, query]);
+    }, [page, query, selectedFilters]);
 
     const fetchQueriedProducts = async (query) => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/cigar/search`, { params: { query, page, limit: 20 } });
+            const response = await axiosInstance.get(apiRoutes.search, { params: { query, ...selectedFilters, page, limit: 20 } });
             setProducts(response.data.cigars);
             setTotalPages(response.data.totalPages);
             setTotalRecords(response.data.totalRecords)
@@ -33,6 +43,7 @@ const ProductsPage = ({ }) => {
         <div className="main-container">
             <div className="search-wrap">
                 <SearchBox setQuery={setQuery} />
+                <Filters selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
             </div>
 
             <Box sx={{

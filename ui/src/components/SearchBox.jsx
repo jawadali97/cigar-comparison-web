@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { TextField, CircularProgress, MenuItem, Autocomplete, Button, Box } from '@mui/material';
-import axios from 'axios';
+import axiosInstance from '../services/axios';
 import debounce from 'lodash/debounce'
+import { apiRoutes } from '../app.constants';
 
 const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
     const [inputValue, setInputValue] = useState('');
@@ -17,7 +18,7 @@ const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
 
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:5000/api/cigar/suggestions`, { params: { query } });
+            const response = await axiosInstance.get(apiRoutes.suggestions, { params: { query } });
             // const data = response.data.map(item => ({ label: item.name, id: item._id }))
             const data = response.data.map(item => item.name)
             setOptions(data);
@@ -81,9 +82,10 @@ const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
                 )}
                 renderOption={(props, option) => {
                     const { key, id, ...optionProps } = props;
-                    return (<MenuItem key={id} {...optionProps}>
-                        {key}
-                    </MenuItem>)
+                    return (
+                        <MenuItem key={id} {...optionProps}>
+                            {key}
+                        </MenuItem>)
                 }}
             />
             <Button
