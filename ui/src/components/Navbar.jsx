@@ -12,7 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Link } from '@mui/material';
+import { Icon, Link } from '@mui/material';
+import logo from '../assets/logo.png'
 
 const pages = ['All Cigars'];
 
@@ -22,6 +23,7 @@ function Navbar() {
         <AppBar position="static" sx={{ background: '#00ADB5', padding: '0 5%' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
+                    <img width='60px' src={logo} />
                     <Typography
                         variant="h6"
                         noWrap
@@ -32,7 +34,7 @@ function Navbar() {
                             display: { xs: 'none', md: 'flex' },
                             fontWeight: 700,
                             letterSpacing: '.2rem',
-                            color: 'inherit',
+                            color: 'white',
                             textDecoration: 'none',
                             fontSize: '2rem'
                         }}

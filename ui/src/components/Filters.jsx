@@ -1,8 +1,25 @@
-import { Autocomplete, Box, Checkbox, Chip, TextField, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Autocomplete, Box, Checkbox, Chip, Popper, TextField, Typography } from '@mui/material'
+import React, { useEffect, useState, useRef } from 'react'
 import axiosInstance from '../services/axios';
 import { apiRoutes, filtersValues } from '../app.constants';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
+
+const CustomPopper = (props) => {
+    const { anchorEl, open, ...rest } = props;
+    const popperRef = useRef(null);
+
+    useEffect(() => {
+        if (anchorEl && open) {
+            const width = anchorEl.clientWidth;
+            if (popperRef.current) {
+                popperRef.current.style.width = `${width}px`;
+            }
+        }
+    }, [anchorEl, open]);
+
+    return <Popper {...props} ref={popperRef} />;
+};
+
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
@@ -175,6 +192,7 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
                 options={uniqueAttributes.shapes}
                 value={selectedFilters.shape}
                 onChange={(event, newValue) => handleFilterChange(event, newValue, 'shape')}
+                // PopperComponent={CustomPopper}
                 disableCloseOnSelect
                 getOptionLabel={(option) => option}
                 renderOption={(props, option, { selected }) => {

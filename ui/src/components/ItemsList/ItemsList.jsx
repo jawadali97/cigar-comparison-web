@@ -11,7 +11,7 @@ const ItemsList = ({ itemsList, page, totalPages, setPage, totalRecords, startIt
                 container
                 justifyContent="center"
                 alignItems="center"
-                padding={{ xs: '0', md: '0 10%' }}
+                padding={{ xs: '0', md: '0 10% 40px 10%' }}
             >
                 <Grid item xs={12}>
                     <PaginationComponent

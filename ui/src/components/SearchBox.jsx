@@ -92,6 +92,7 @@ const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
                 className='btn'
                 variant='contained'
                 size='small'
+                sx={{ color: 'white' }}
                 onClick={() => {
                     setQuery(inputValue)
                 }}
