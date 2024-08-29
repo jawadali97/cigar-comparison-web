@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { TextField, CircularProgress, MenuItem, Autocomplete, Button, Box } from '@mui/material';
+import { TextField, CircularProgress, MenuItem, Autocomplete, Button, Box, InputAdornment } from '@mui/material';
 import axiosInstance from '../services/axios';
 import debounce from 'lodash/debounce'
 import { apiRoutes } from '../app.constants';
+import { Search } from '@mui/icons-material';
 
 const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
     const [inputValue, setInputValue] = useState('');
@@ -77,6 +78,7 @@ const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
                                     {params.InputProps.endAdornment}
                                 </>
                             ),
+                            startAdornment: (<Search />)
                         }}
                     />
                 )}
