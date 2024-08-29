@@ -9,6 +9,20 @@ export class CigarsService {
         @InjectModel(Cigar.name) private cigarModel: Model<Cigar>,
     ) { }
 
+    // Helper function to parse range strings into MongoDB range queries
+    // parseRanges(ranges: string[]): RegExp[] {
+    //     return ranges.map(range => {
+    //         const [min, max] = range.split('-').map(Number);
+    //         return new RegExp(`^(${min}|${max}|${min}-.*|.*-${max}|${min}-.+-.+|.+-.+-${max})$`);
+    //     });
+    // }
+
+    parseRanges(ranges: string[], key: string): any[] {
+        return ranges.map(range => {
+            const [min, max] = range.split('-').map(Number);
+            return { [key]: { $gte: min, $lte: max } };
+        });
+    }
 
     async searchCigars(
         query: string,
@@ -21,12 +35,18 @@ export class CigarsService {
         totalRecords: number,
         skip: number
     }> {
-
         const criteria = {};
         const skip = (page - 1) * limit >= 0 ? (page - 1) * limit : 0;
         Object.keys(filters).forEach(key => {
             if (filters[key] && filters[key].length > 0) {
-                criteria[key] = { $in: filters[key].map(value => new RegExp(`^${value}$`, 'i')) };
+                if (key === 'ring' || key === 'length') {
+                    if (!criteria['$and']) {
+                        criteria['$and'] = []
+                    }
+                    criteria['$and'].push({ '$or': this.parseRanges(filters[key], key) });
+                } else {
+                    criteria[key] = { $in: filters[key].map(value => new RegExp(`^${value}$`, 'i')) };
+                }
             }
         });
 

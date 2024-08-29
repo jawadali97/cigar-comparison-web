@@ -13,29 +13,35 @@ const ItemsList = ({ itemsList, page, totalPages, setPage, totalRecords, startIt
                 alignItems="center"
                 padding={{ xs: '0', md: '0 10% 40px 10%' }}
             >
-                <Grid item xs={12}>
-                    <PaginationComponent
-                        page={page}
-                        totalPages={totalPages}
-                        setPage={setPage}
-                        totalRecords={totalRecords}
-                        startItems={startItems}
-                        endItems={startItems + itemsList.length}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    {itemsList.map(item => (<ListItem item={item} />))}
-                </Grid>
-                <Grid item xs={12} >
-                    <PaginationComponent
-                        page={page}
-                        totalPages={totalPages}
-                        setPage={setPage}
-                        totalRecords={totalRecords}
-                        startItems={startItems}
-                        endItems={startItems + itemsList.length}
-                    />
-                </Grid>
+                {itemsList.length ?
+                    <>
+                        <Grid item xs={12}>
+                            <PaginationComponent
+                                page={page}
+                                totalPages={totalPages}
+                                setPage={setPage}
+                                totalRecords={totalRecords}
+                                startItems={startItems}
+                                endItems={startItems + itemsList.length}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            {itemsList.map(item => (<ListItem item={item} />))}
+                        </Grid>
+                        <Grid item xs={12} >
+                            <PaginationComponent
+                                page={page}
+                                totalPages={totalPages}
+                                setPage={setPage}
+                                totalRecords={totalRecords}
+                                startItems={startItems}
+                                endItems={startItems + itemsList.length}
+                            />
+                        </Grid>
+                    </> :
+                    <Grid item xs={12} pt='20px' textAlign='center'>
+                        No Results Found
+                    </Grid>}
             </Grid>
         </Box>
     )

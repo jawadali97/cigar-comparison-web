@@ -94,7 +94,7 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
                 }}
                 style={{ flex: 1 }}
                 renderInput={(params) => (
-                    <TextField {...params} label="Length" placeholder="Length" />
+                    <TextField {...params} label="Length" />
                 )}
             />
 
@@ -123,7 +123,7 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
                 }}
                 style={{ flex: 1 }}
                 renderInput={(params) => (
-                    <TextField {...params} label="Rings" placeholder="Rings" />
+                    <TextField {...params} label="Rings" />
                 )}
             />
 
@@ -152,7 +152,7 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
                 }}
                 style={{ flex: 1 }}
                 renderInput={(params) => (
-                    <TextField {...params} label="Strength" placeholder="Strenght" />
+                    <TextField {...params} label="Strength" />
                 )}
             />
 
@@ -181,7 +181,7 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
                 }}
                 style={{ flex: 1 }}
                 renderInput={(params) => (
-                    <TextField {...params} label="Origin" placeholder="Origin" />
+                    <TextField {...params} label="Origin" />
                 )}
             />
 
@@ -211,7 +211,7 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
                 }}
                 style={{ flex: 1 }}
                 renderInput={(params) => (
-                    <TextField {...params} label="Shape" placeholder="Shape" />
+                    <TextField {...params} label="Shape" />
                 )}
             />
         </Box>

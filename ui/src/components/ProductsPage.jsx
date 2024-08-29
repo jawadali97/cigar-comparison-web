@@ -27,6 +27,11 @@ const ProductsPage = ({ }) => {
         fetchQueriedProducts(query);
     }, [page, query, selectedFilters]);
 
+    useEffect(() => {
+        fetchQueriedProducts(query);
+        setPage(1)
+    }, [selectedFilters]);
+
     const fetchQueriedProducts = async (query) => {
         try {
             const response = await axiosInstance.get(apiRoutes.search, { params: { query, ...selectedFilters, page, limit: 20 } });
@@ -34,6 +39,7 @@ const ProductsPage = ({ }) => {
             setTotalPages(response.data.totalPages);
             setTotalRecords(response.data.totalRecords)
             setSkipItems(response.data.skip)
+            window.scrollTo({ top: 0 })
         } catch (error) {
             console.error('Error fetching queried products:', error);
         }
