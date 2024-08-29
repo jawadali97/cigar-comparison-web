@@ -28,7 +28,6 @@ const ProductsPage = ({ }) => {
     }, [page, query, selectedFilters]);
 
     useEffect(() => {
-        fetchQueriedProducts(query);
         setPage(1)
     }, [selectedFilters]);
 

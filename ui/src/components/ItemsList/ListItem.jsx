@@ -59,7 +59,7 @@ const ListItem = ({ item }) => {
                                 <tr key={index}>
                                     <td>{row.name}</td>
                                     <td style={{ color: row.availability.toLowerCase().replace(' ', '').includes('instock') ? 'green' : 'red' }}>{row.availability}</td>
-                                    <td>{row.price}</td>
+                                    <td>{'$' + row.price}</td>
                                 </tr>
                             ))}
                         </tbody>

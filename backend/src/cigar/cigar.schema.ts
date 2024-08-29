@@ -10,7 +10,7 @@ export class Pack extends Document {
     availability: string;
 
     @Prop()
-    price: string;
+    price: number;
 }
 
 export const PackSchema = SchemaFactory.createForClass(Pack);
@@ -24,7 +24,7 @@ export class Cigar extends Document {
     brand: string;
 
     @Prop()
-    length: string;
+    length: number;
 
     @Prop()
     name: string;
@@ -39,7 +39,7 @@ export class Cigar extends Document {
     prod_url: string;
 
     @Prop()
-    ring: string;
+    ring: number;
 
     @Prop()
     scraped_at: Date;
