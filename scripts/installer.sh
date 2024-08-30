@@ -126,6 +126,11 @@ function build_api() {
 # sudo systemctl restart nginx
 # sudo systemctl enable nginx
 
+
+install_packages
+build_api
+build_ui
+
 echo "Installation complete. Your MERN environment is set up."
 echo "Project Directory: $PROJECT_DIR"
 echo "Node.js Version: $(node -v)"
