@@ -97,27 +97,15 @@ function build_api() {
     popd
 }
 
-# function setup_nginx() {
-#     echo "Setting up Nginx as a reverse proxy..."
-#     sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/$PROJECT_NAME
-
-#     sudo tee /etc/nginx/sites-available/$PROJECT_NAME > /dev/null <<EOL
-# server {
-#   listen 80;
-
-#   server_name your_domain_or_IP;
-
-#   location / {
-#     proxy_pass http://localhost:3000;
-#     proxy_http_version 1.1;
-#     proxy_set_header Upgrade \$http_upgrade;
-#     proxy_set_header Connection 'upgrade';
-#     proxy_set_header Host \$host;
-#     proxy_cache_bypass \$http_upgrade;
-#   }
-# }
-# EOL
-# }
+function setup_nginx() {
+    echo "Setting up Nginx as a reverse proxy..."
+    tryexec sudo cp $WORKSPACE/scripts/default $PROJECT_DIR/default
+    # tryexec sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/$PROJECT_NAME
+    tryexec sudo cp $PROJECT_DIR/default /etc/nginx/sites-available/default
+    tryexec sudo nginx -t
+    tryexec sudo systemctl reload nginx
+    tryexec sudo systemctl restart nginx
+}
 
 # sudo ln -s /etc/nginx/sites-available/$PROJECT_NAME /etc/nginx/sites-enabled/
 # sudo unlink /etc/nginx/sites-enabled/default
@@ -129,9 +117,9 @@ function build_api() {
 # sudo systemctl restart nginx
 # sudo systemctl enable nginx
 
-
 install_packages
 build_api
+setup_nginx
 build_ui
 
 echo "Installation complete. Your MERN environment is set up."
@@ -139,4 +127,4 @@ echo "Project Directory: $PROJECT_DIR"
 echo "Node.js Version: $(node -v)"
 echo "NPM Version: $(npm -v)"
 echo "MongoDB Version: $(mongod --version)"
-# echo "Nginx is configured to proxy requests to your MERN app running on port 3000."
+echo "Nginx is configured to proxy requests to app running on port 5000."
