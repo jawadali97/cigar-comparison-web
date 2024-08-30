@@ -4,7 +4,7 @@
 PROJECT_NAME="cigar_matrix"
 PROJECT_DIR="/opt/$PROJECT_NAME"
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
-WORKSPACE=$(dirname `dirname `dirname ${DIR}``)
+WORKSPACE=$(dirname ${DIR})
 NODE_VERSION="14.x"  # You can change it to the desired Node.js version
 MONGO_DIR="/data/db"
 
@@ -66,8 +66,8 @@ function install_packages() {
 
 function build_ui() {
     echo "Building UI"
-    tryexec rm -rf $PROJECT_DIR/ui
-    tryexec cp -r $WORKSPACE/ui $PROJECT_DIR/
+    tryexec sudo rm -rf $PROJECT_DIR/ui
+    tryexec sudo cp -r $WORKSPACE/ui $PROJECT_DIR/
     pushd $PROJECT_DIR/ui
     # The contents of the .npm directory are created with root user ownership due to which the user ownership is being
     # changed to the current non root user running the installer script, otherwise the npm install command fails on a
@@ -83,8 +83,8 @@ function build_ui() {
 
 function build_api() {
     echo "Building API Server"
-    tryexec rm -rf $OPT_DIR/backend
-    tryexec cp -r $WORKSPACE/backend $OPT_DIR/
+    tryexec sudo rm -rf $OPT_DIR/backend
+    tryexec sudo cp -r $WORKSPACE/backend $OPT_DIR/
     # tryexec cp $WORKSPACE/.env $OPT_DIR/
     pushd $OPT_DIR/backend
     tryexec npm install && npm run build
