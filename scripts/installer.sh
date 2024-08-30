@@ -92,7 +92,8 @@ function build_api() {
     tryexec sudo npm run build
     tryexec npm run start:prod
     tryexec pm2 save
-    tryexec pm2 startup
+    # tryexec pm2 startup
+    tryexec sudo env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
     popd
 }
 
