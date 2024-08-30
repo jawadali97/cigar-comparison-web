@@ -74,10 +74,11 @@ function build_ui() {
     # fresh setup.
     # https://drive.google.com/file/d/1N5MiJSUQWVbJsvNeGh6tTC1s9nTaSDog/view?usp=sharing
     # tryexec sudo chown -R ${USER}:${USER} "/home/${USER}/.npm"
-    tryexec npm install && npm run build --omit=dev
+    tryexec sudo npm install
+    tryexec sudo npm run build --omit=dev
     tryexec sudo rm -rf /var/www/html/*
     tryexec sudo cp -rf dist/* /var/www/html/
-    tryexec rm -rf dist/
+    tryexec sudo rm -rf dist/
     popd
 }
 
@@ -87,7 +88,8 @@ function build_api() {
     tryexec sudo cp -r $WORKSPACE/backend $OPT_DIR/
     # tryexec cp $WORKSPACE/.env $OPT_DIR/
     pushd $OPT_DIR/backend
-    tryexec npm install && npm run build
+    tryexec sudo npm install
+    tryexec sudo npm run build
     tryexec npm run start:prod
     tryexec pm2 save
     tryexec pm2 startup
