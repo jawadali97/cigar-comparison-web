@@ -61,8 +61,15 @@ function setup_nginx() {
 }
 
 function stop_services() {
+    echo "Stoping all services..."
+    sudo pm2 show cigarmatrix-api
+    pm2_proc_exists=$?
+    #  tryexec sudo systemctl stop mongod.service
     # tryexec sudo systemctl stop nginx
-    tryexec sudo pm2 del cigarmatrix-api
+    [[ $pm2_proc_exists -eq 0 ]] && tryexec sudo pm2 delete cigarmatrix-api
+#   free_port 27017
+#   free_port 80
+#   free_port 3000
 }
 
 stop_services
