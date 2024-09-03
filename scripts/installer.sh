@@ -105,19 +105,30 @@ function setup_nginx() {
     tryexec sudo nginx -t
     tryexec sudo systemctl reload nginx
     tryexec sudo systemctl restart nginx
+    # sudo ln -s /etc/nginx/sites-available/$PROJECT_NAME /etc/nginx/sites-enabled/
+    # sudo unlink /etc/nginx/sites-enabled/default
 }
 
-# sudo ln -s /etc/nginx/sites-available/$PROJECT_NAME /etc/nginx/sites-enabled/
-# sudo unlink /etc/nginx/sites-enabled/default
+function stop_services() {
+    # tryexec sudo systemctl stop nginx
+    tryexec sudo pm2 del cigarmatrix-api
+}
 
-# echo "Testing Nginx configuration..."
-# sudo nginx -t
+# function stop_services() {
+#     echo "Stoping all services..."
+#     pm2 show cedge-tool
+#     pm2_proc_exists=$?
+#     #  tryexec sudo systemctl stop mongod.service
+#     tryexec sudo systemctl stop nginx
+#     [[ $pm2_proc_exists -eq 0 ]] && tryexec sudo pm2 delete cigarmatrix-api
+# #   free_port 27017
+# #   free_port 80
+# #   free_port 3000
+# }
 
-# echo "Restarting Nginx..."
-# sudo systemctl restart nginx
-# sudo systemctl enable nginx
 
 install_packages
+stop_services
 build_api
 setup_nginx
 build_ui
