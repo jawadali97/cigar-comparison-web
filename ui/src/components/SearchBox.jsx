@@ -50,12 +50,10 @@ const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
     return (
         <Box
             display="flex"
-            columnGap="30px"
-            width="100%"
-            justifyContent="center"
+            justifyContent="space-between"
         >
             <Autocomplete
-                sx={{ width: '80%' }}
+                sx={{ width: '100%', marginRight: '25px' }}
                 freeSolo
                 value={selectedValue}
                 onChange={handleOptionSelected}

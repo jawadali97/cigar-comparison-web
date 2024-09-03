@@ -29,3 +29,10 @@ export const filtersValues = {
         "Full",
     ],
 }
+
+export const capitalize = (str) => {
+    if (str.toLowerCase() === 'usa') {
+        return str.toUpperCase();
+    }
+    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+}

@@ -2,6 +2,7 @@ import { Box, Grid, Link, Typography } from '@mui/material'
 import React from 'react'
 import './ListItem.css'
 import VerticalTable from './VerticalTable'
+import { capitalize } from '../../app.constants'
 
 const ListItem = ({ item }) => {
     return (
@@ -12,7 +13,7 @@ const ListItem = ({ item }) => {
             // maxWidth: '70%'
         }}>
             <Typography sx={{
-                fontSize: '1.5rem',
+                fontSize: '1.25rem',
                 fontWeight: '700',
                 color: '#00ADB5',
                 p: '10px  0'
@@ -39,7 +40,7 @@ const ListItem = ({ item }) => {
                             <div><strong>Strength: </strong>{item?.strength || '-'}</div>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <div><strong>Origin: </strong>{item?.origin || '-'}</div>
+                            <div><strong>Origin: </strong>{capitalize(item?.origin) || '-'}</div>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import './ProductsPage.css'
-import { Box, selectClasses, Typography } from "@mui/material";
+import { Box, Divider, Grid, selectClasses, Typography } from "@mui/material";
 import SearchBox from "./SearchBox";
 import ItemsList from "./ItemsList/ItemsList";
 import axiosInstance from "../services/axios";
@@ -45,27 +45,42 @@ const ProductsPage = ({ }) => {
     };
 
     return (
-        <div className="main-container">
-            <div className="search-wrap">
-                <SearchBox setQuery={setQuery} />
-                <Filters selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
-            </div>
+        <Box>
+            <Grid container
+                rowSpacing='10px'
+                sx={{
+                    p: { xs: '20px 5%', md: '30px 10% 30px' },
+                    borderBottom: '1px solid #EEEEEE',
+                }}>
+                <Grid item xs={12} justifyContent='center'>
+                    <Typography
+                        component='h1'
+                        sx={{
+                            color: '#00ADB5',
+                            fontWeight: '700',
+                            fontSize: '1.5rem',
+                            textAlign: 'center'
+                        }}>
+                        The Best Cigar Deal Search
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} mt='10px'>
+                    <SearchBox setQuery={setQuery} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography p='5px 0'><b>Filters:</b></Typography>
+                    <Filters selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
+                </Grid>
+            </Grid>
 
-            <Box sx={{
+            {/* <Box sx={{
                 background: 'white',
                 // padding: '50px 10px 20px 10px',
                 padding: '3% 10% 20px 10%',
                 textAlign: 'start',
                 borderBottom: '1px solid #EEEEEE',
             }}>
-                <Typography sx={{
-                    // color: 'white',
-                    color: '#00ADB5',
-                    fontWeight: '700',
-                    fontSize: '1.5rem'
-                }}>
-                    Cigar Search
-                </Typography>
+
 
                 <Typography sx={{
                     // color: '#black'
@@ -79,12 +94,11 @@ const ProductsPage = ({ }) => {
                     want to buy them anywhere else. You deserve to get more than what you pay for, and that's how we roll.
                     So here's the bottom line: you're awesome. We're awesome. Let's search for cigars together and be friends.
                 </Typography>
-            </Box>
+            </Box> */}
 
             <Box sx={{
                 padding: { xs: '0', md: '0 10%' },
                 background: '#EEEEEE',
-                // margin: '20px 0'
             }}>
                 <ItemsList
                     itemsList={products}
@@ -95,7 +109,7 @@ const ProductsPage = ({ }) => {
                     startItems={skipItems}
                 />
             </Box>
-        </div>
+        </Box>
     );
 }
 

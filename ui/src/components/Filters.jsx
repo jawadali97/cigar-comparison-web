@@ -1,7 +1,7 @@
-import { Autocomplete, Box, Checkbox, Chip, Popper, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Checkbox, Chip, Grid, Popper, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState, useRef } from 'react'
 import axiosInstance from '../services/axios';
-import { apiRoutes, filtersValues } from '../app.constants';
+import { apiRoutes, capitalize, filtersValues } from '../app.constants';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
 
 const CustomPopper = (props) => {
@@ -50,171 +50,172 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
         fetchAttributes();
     }, []);
 
-    const capitalize = (str) => {
-        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-    };
-
     const handleFilterChange = (event, newValue, attribute) => {
         setSelectedFilters({ ...selectedFilters, [attribute]: newValue })
     };
 
     return (
-        <Box sx={{
-            marginTop: '20px',
-            padding: '0 5%',
+        <Grid container spacing={1} sx={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '10px',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             alignItems: 'top'
         }}>
-            <Typography pt='5px'>Filter By: </Typography>
-            <Autocomplete
-                multiple
-                id="length"
-                size='small'
-                value={selectedFilters.length}
-                onChange={(event, newValue) => handleFilterChange(event, newValue, 'length')}
-                options={filtersValues.cigarLength}
-                disableCloseOnSelect
-                getOptionLabel={(option) => option}
-                renderOption={(props, option, { selected }) => {
-                    const { key, ...optionProps } = props;
-                    return (
-                        <li key={key} {...optionProps}>
-                            <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                            />
-                            {option}
-                        </li>
-                    );
-                }}
-                style={{ flex: 1 }}
-                renderInput={(params) => (
-                    <TextField {...params} label="Length" />
-                )}
-            />
-
-            <Autocomplete
-                multiple
-                id="ring"
-                size='small'
-                options={filtersValues.rings}
-                disableCloseOnSelect
-                value={selectedFilters.ring}
-                onChange={(event, newValue) => handleFilterChange(event, newValue, 'ring')}
-                getOptionLabel={(option) => option}
-                renderOption={(props, option, { selected }) => {
-                    const { key, ...optionProps } = props;
-                    return (
-                        <li key={key} {...optionProps}>
-                            <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                            />
-                            {option}
-                        </li>
-                    );
-                }}
-                style={{ flex: 1 }}
-                renderInput={(params) => (
-                    <TextField {...params} label="Rings" />
-                )}
-            />
-
-            <Autocomplete
-                multiple
-                id="strength"
-                size='small'
-                options={filtersValues.strengths}
-                value={selectedFilters.strength}
-                onChange={(event, newValue) => handleFilterChange(event, newValue, 'strength')}
-                disableCloseOnSelect
-                getOptionLabel={(option) => option}
-                renderOption={(props, option, { selected }) => {
-                    const { key, ...optionProps } = props;
-                    return (
-                        <li key={key} {...optionProps}>
-                            <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                            />
-                            {option}
-                        </li>
-                    );
-                }}
-                style={{ flex: 1 }}
-                renderInput={(params) => (
-                    <TextField {...params} label="Strength" />
-                )}
-            />
-
-            <Autocomplete
-                multiple
-                id="origin"
-                size='small'
-                options={uniqueAttributes.origins}
-                value={selectedFilters.origin}
-                onChange={(event, newValue) => handleFilterChange(event, newValue, 'origin')}
-                disableCloseOnSelect
-                getOptionLabel={(option) => option}
-                renderOption={(props, option, { selected }) => {
-                    const { key, ...optionProps } = props;
-                    return (
-                        option && <li key={key} {...optionProps} style={{ textTransform: 'capitalize' }}>
-                            <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                            />
-                            {option}
-                        </li>
-                    );
-                }}
-                style={{ flex: 1 }}
-                renderInput={(params) => (
-                    <TextField {...params} label="Origin" />
-                )}
-            />
-
-            <Autocomplete
-                multiple
-                id="shape"
-                size='small'
-                options={uniqueAttributes.shapes}
-                value={selectedFilters.shape}
-                onChange={(event, newValue) => handleFilterChange(event, newValue, 'shape')}
-                // PopperComponent={CustomPopper}
-                disableCloseOnSelect
-                getOptionLabel={(option) => option}
-                renderOption={(props, option, { selected }) => {
-                    const { key, ...optionProps } = props;
-                    return (
-                        option && <li key={key} {...optionProps} style={{ textTransform: 'capitalize' }}>
-                            <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{ marginRight: 8 }}
-                                checked={selected}
-                            />
-                            {option}
-                        </li>
-                    );
-                }}
-                style={{ flex: 1 }}
-                renderInput={(params) => (
-                    <TextField {...params} label="Shape" />
-                )}
-            />
-        </Box>
+            <Grid item xs={6} md={2}>
+                <Autocomplete
+                    multiple
+                    id="length"
+                    size='small'
+                    value={selectedFilters.length}
+                    onChange={(event, newValue) => handleFilterChange(event, newValue, 'length')}
+                    options={filtersValues.cigarLength}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option}
+                    renderOption={(props, option, { selected }) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            <li key={key} {...optionProps} style={{ fontSize: '1rem' }}>
+                                <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    sx={{ padding: '5px 8px 5px 0', margin: 0 }}
+                                    checked={selected}
+                                />
+                                {option}
+                            </li>
+                        );
+                    }}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Length" />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={6} md={2.4}>
+                <Autocomplete
+                    multiple
+                    id="ring"
+                    size='small'
+                    options={filtersValues.rings}
+                    disableCloseOnSelect
+                    value={selectedFilters.ring}
+                    onChange={(event, newValue) => handleFilterChange(event, newValue, 'ring')}
+                    getOptionLabel={(option) => option}
+                    renderOption={(props, option, { selected }) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            <li key={key} {...optionProps} style={{ fontSize: '1rem' }}>
+                                <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    sx={{ padding: '5px 8px 5px 0', margin: 0 }}
+                                    checked={selected}
+                                />
+                                {option}
+                            </li>
+                        );
+                    }}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Rings" />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={6} md={2.4}>
+                <Autocomplete
+                    multiple
+                    id="strength"
+                    size='small'
+                    options={filtersValues.strengths}
+                    value={selectedFilters.strength}
+                    onChange={(event, newValue) => handleFilterChange(event, newValue, 'strength')}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option}
+                    renderOption={(props, option, { selected }) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            <li key={key} {...optionProps} style={{ fontSize: '1rem' }}>
+                                <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    sx={{ padding: '5px 8px 5px 0', margin: 0 }}
+                                    checked={selected}
+                                />
+                                {option}
+                            </li>
+                        );
+                    }}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Strength" />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={6} md={2.4}>
+                <Autocomplete
+                    multiple
+                    id="origin"
+                    size='small'
+                    options={uniqueAttributes.origins}
+                    value={selectedFilters.origin}
+                    onChange={(event, newValue) => handleFilterChange(event, newValue, 'origin')}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option}
+                    renderOption={(props, option, { selected }) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            option && option !== 'N/A' &&
+                            <li key={key} {...optionProps} style={{
+                                textTransform: 'capitalize',
+                                fontSize: '1rem'
+                            }}>
+                                <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    sx={{ padding: '5px 8px 5px 0', margin: 0 }}
+                                    checked={selected}
+                                />
+                                {option}
+                            </li>
+                        );
+                    }}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Origin" />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={6} md={2.4}>
+                <Autocomplete
+                    multiple
+                    id="shape"
+                    size='small'
+                    options={uniqueAttributes.shapes}
+                    value={selectedFilters.shape}
+                    onChange={(event, newValue) => handleFilterChange(event, newValue, 'shape')}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option}
+                    renderOption={(props, option, { selected }) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            option && option !== 'N/A' &&
+                            <li key={key} {...optionProps} style={{
+                                textTransform: 'capitalize',
+                                fontSize: '1rem'
+                            }}>
+                                <Checkbox
+                                    size='small'
+                                    sx={{ padding: '5px 8px 5px 0', margin: 0 }}
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    checked={selected}
+                                />
+                                {option}
+                            </li>
+                        );
+                    }}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Shape" />
+                    )}
+                />
+            </Grid>
+        </Grid>
     )
 }
 

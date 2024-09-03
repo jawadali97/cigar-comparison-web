@@ -28,7 +28,7 @@ function Navbar() {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="/"
                         sx={{
                             mr: 10,
                             display: { xs: 'none', md: 'flex' },
