@@ -29,3 +29,8 @@ strong {
     font-family: cursive;
     text-align: center;
 }
+
+.share-btn {
+    display: flex;
+    align-items: center;
+}

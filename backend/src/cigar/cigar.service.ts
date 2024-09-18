@@ -132,4 +132,8 @@ export class CigarsService {
             .exec();
         return cigars.slice(0, 10);
     }
+
+    async findById(id: string): Promise<Cigar> {
+        return this.cigarModel.findById(id).exec();
+    }
 }

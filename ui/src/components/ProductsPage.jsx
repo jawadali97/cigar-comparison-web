@@ -6,6 +6,7 @@ import ItemsList from "./ItemsList/ItemsList";
 import axiosInstance from "../services/axios";
 import { apiRoutes } from "../app.constants";
 import Filters from "./Filters";
+import { useParams } from 'react-router-dom';
 
 const ProductsPage = ({ }) => {
     const [products, setProducts] = useState([]);
@@ -23,17 +24,32 @@ const ProductsPage = ({ }) => {
         shape: []
     });
 
-    useEffect(() => {
-        fetchQueriedProducts(query);
-    }, [page, query, selectedFilters]);
+    const { id } = useParams();
 
     useEffect(() => {
-        setPage(1)
-    }, [selectedFilters]);
+        if (id && !(query || Object.values(selectedFilters).some(filter => filter.length > 0))) {
+            console.log("Id: ", id);
+            fetchCigarById(id);
+        } else {
+            fetchQueriedProducts({ query, ...selectedFilters, page });
+        }
+    }, []);
 
-    const fetchQueriedProducts = async (query) => {
+    const fetchCigarById = async (id) => {
         try {
-            const response = await axiosInstance.get(apiRoutes.search, { params: { query, ...selectedFilters, page, limit: 20 } });
+            const response = await axiosInstance.get(`${apiRoutes.getCigarById}/${id}`);
+            setProducts([response.data]);
+            setTotalPages(1);
+            setTotalRecords(1)
+            setSkipItems(0)
+        } catch (error) {
+            console.error('Error fetching queried products:', error);
+        }
+    };
+
+    const fetchQueriedProducts = async (queryWithFilters) => {
+        try {
+            const response = await axiosInstance.get(apiRoutes.search, { params: { ...queryWithFilters, limit: 20 } });
             setProducts(response.data.cigars);
             setTotalPages(response.data.totalPages);
             setTotalRecords(response.data.totalRecords)
@@ -43,6 +59,23 @@ const ProductsPage = ({ }) => {
             console.error('Error fetching queried products:', error);
         }
     };
+
+    const applyFilters = (filters) => {
+        setSelectedFilters(filters);
+        setPage(1);
+        fetchQueriedProducts({ query, ...filters, page: 1 });
+    }
+
+    const handleSearch = (searchTerm) => {
+        setQuery(searchTerm);
+        setPage(1);
+        fetchQueriedProducts({ query: searchTerm, ...selectedFilters, page: 1 });
+    }
+
+    const handlePageChange = (page) => {
+        setPage(page);
+        fetchQueriedProducts({ query, ...selectedFilters, page });
+    }
 
     return (
         <Box>
@@ -65,36 +98,13 @@ const ProductsPage = ({ }) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} mt='10px'>
-                    <SearchBox setQuery={setQuery} />
+                    <SearchBox onSearch={handleSearch} />
                 </Grid>
                 <Grid item xs={12}>
                     <Typography p='5px 0'><b>Filters:</b></Typography>
-                    <Filters selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
+                    <Filters onFilterChange={applyFilters} />
                 </Grid>
             </Grid>
-
-            {/* <Box sx={{
-                background: 'white',
-                // padding: '50px 10px 20px 10px',
-                padding: '3% 10% 20px 10%',
-                textAlign: 'start',
-                borderBottom: '1px solid #EEEEEE',
-            }}>
-
-
-                <Typography sx={{
-                    // color: '#black'
-                    fontSize: '0.8rem'
-                }}>
-                    Not to toot our own horn here or anything, but our cigar humidor is so big, it almost sounds like the
-                    beginning of a fat joke. Maybe that's why you're here - variety. Or maybe it's because you know what you
-                    want, and you're just hoping we can cut you a sweetheart of a deal on your favorite cigars. Either way,
-                    that's why we make the cigar search process so easy here at CigarMatrix - give you a head-spinningly profuse
-                    number of smokes to choose from, and slash the prices of each so deep, it's nearly impossible for you to
-                    want to buy them anywhere else. You deserve to get more than what you pay for, and that's how we roll.
-                    So here's the bottom line: you're awesome. We're awesome. Let's search for cigars together and be friends.
-                </Typography>
-            </Box> */}
 
             <Box sx={{
                 padding: { xs: '0', md: '0 10%' },
@@ -107,6 +117,7 @@ const ProductsPage = ({ }) => {
                     setPage={setPage}
                     totalRecords={totalRecords}
                     startItems={skipItems}
+                    onPageChange={handlePageChange}
                 />
             </Box>
         </Box>

@@ -4,6 +4,7 @@ export const apiRoutes = {
     suggestions: '/cigar/suggestions',
     search: '/cigar/search',
     filters: '/cigar/filters',
+    getCigarById: '/cigar',
 }
 
 export const environment = process.env.NODE_ENV === 'production' ?

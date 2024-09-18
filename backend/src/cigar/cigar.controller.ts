@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CigarsService } from './cigar.service';
 import { Cigar } from './cigar.schema';
 
@@ -26,6 +26,11 @@ export class CigarController {
     @Get('filters')
     async getFilters() {
         return this.cigarsService.getFilters();
+    }
+
+    @Get(':id')
+    async getCigarById(@Param('id') id: string) {
+        return this.cigarsService.findById(id);
     }
 
     @Get('suggestions')

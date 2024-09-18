@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 import { apiRoutes } from '../app.constants';
 import { Search } from '@mui/icons-material';
 
-const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
+const SearchBox = ({ onSearch }) => {
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
 
     const handleOptionSelected = (event, newValue) => {
         setSelectedValue(newValue);
-        setQuery(newValue)
+        onSearch(newValue);
     };
 
     const debouncedFetchSuggestions = useCallback(
@@ -93,8 +93,8 @@ const SearchBox = ({ fetchQueriedProducts, setQuery }) => {
                 variant='contained'
                 size='small'
                 sx={{ color: 'white' }}
-                onClick={() => {
-                    setQuery(inputValue)
+                onClick={(e) => {
+                    handleOptionSelected(e, inputValue)
                 }}
             >Search</Button>
         </Box>

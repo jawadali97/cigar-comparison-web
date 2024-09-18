@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import ListItem from './ListItem'
 import PaginationComponent from '../Pagination'
 
-const ItemsList = ({ itemsList, page, totalPages, setPage, totalRecords, startItems }) => {
+const ItemsList = ({ itemsList, page, totalPages, setPage, totalRecords, startItems, onPageChange }) => {
 
     return (
         <Box sx={{ background: 'white' }}>
@@ -23,10 +23,11 @@ const ItemsList = ({ itemsList, page, totalPages, setPage, totalRecords, startIt
                                 totalRecords={totalRecords}
                                 startItems={startItems}
                                 endItems={startItems + itemsList.length}
+                                onPageChange={onPageChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            {itemsList.map(item => (<ListItem item={item} />))}
+                            {itemsList.map((item, i) => (<ListItem key={i} item={item} />))}
                         </Grid>
                         <Grid item xs={12} >
                             <PaginationComponent
@@ -36,6 +37,7 @@ const ItemsList = ({ itemsList, page, totalPages, setPage, totalRecords, startIt
                                 totalRecords={totalRecords}
                                 startItems={startItems}
                                 endItems={startItems + itemsList.length}
+                                onPageChange={onPageChange}
                             />
                         </Grid>
                     </> :

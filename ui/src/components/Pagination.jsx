@@ -1,10 +1,11 @@
 import { PaginationItem, Pagination, TablePagination, Box } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const PaginationComponent = ({ page, totalPages, setPage, totalRecords, startItems, endItems }) => {
+const PaginationComponent = ({ page, setPage, totalPages, totalRecords, startItems, endItems, onPageChange }) => {
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
+        onPageChange(newPage)
     };
 
     return (

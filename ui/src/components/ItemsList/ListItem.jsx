@@ -3,8 +3,26 @@ import React from 'react'
 import './ListItem.css'
 import VerticalTable from './VerticalTable'
 import { capitalize } from '../../app.constants'
+import {
+    FacebookShareButton,
+    TwitterShareButton,
+    RedditShareButton,
+    EmailShareButton,
+    WhatsappShareButton,
+    FacebookIcon,
+    XIcon,
+    WhatsappIcon,
+    RedditIcon,
+    EmailIcon
+} from 'react-share'
+import ShareButtonSMS from '../ShareButtonSMS'
+
 
 const ListItem = ({ item }) => {
+    const shareUrl = encodeURI(`${window.location.origin}/${item._id}`);
+    // const shareUrl = encodeURI(`${'https://cigarmatrix.com'}/${item._id}`);
+    const title = 'Found a deal on CigarMatrix'
+
     return (
         <Box sx={{
             border: '1px solid #EEEEEE',
@@ -96,6 +114,51 @@ const ListItem = ({ item }) => {
                     </Link>
                 </Grid>
             </Grid>
+
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: { xs: 'center', md: 'right' },
+                gap: '4px',
+                px: '2px',
+                mt: { xs: '15px', md: '15px' }
+            }}>
+                <FacebookShareButton
+                    title={title}
+                    url={shareUrl}
+                    className='share-btn'>
+                    <FacebookIcon size={25} round />
+                </FacebookShareButton>
+                <TwitterShareButton
+                    url={shareUrl}
+                    title={title}
+                    className="share-btn"
+                >
+                    <XIcon size={25} round />
+                </TwitterShareButton>
+                <WhatsappShareButton
+                    url={shareUrl}
+                    title={title}
+                    className='share-btn'>
+                    <WhatsappIcon size={25} round />
+                </WhatsappShareButton>
+                <RedditShareButton
+                    url={shareUrl}
+                    title={title}
+                    className="share-btn"
+                >
+                    <RedditIcon size={25} round />
+                </RedditShareButton>
+                <EmailShareButton
+                    url={shareUrl}
+                    subject={title}
+                    body="Hey, I found a great deal on CigarMatrix."
+                    className="share-btn"
+                >
+                    <EmailIcon size={25} round />
+                </EmailShareButton>
+                <ShareButtonSMS text={title} url={shareUrl} />
+            </Box>
         </Box >
     )
 }

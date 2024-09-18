@@ -24,7 +24,7 @@ const CustomPopper = (props) => {
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
 
-const Filters = ({ selectedFilters, setSelectedFilters }) => {
+const Filters = ({ onFilterChange }) => {
     const [uniqueAttributes, setUniqueAttributes] = useState({
         brands: [],
         lengths: [],
@@ -32,6 +32,14 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
         strengths: [],
         origins: [],
         shapes: []
+    });
+    const [selectedFilters, setSelectedFilters] = useState({
+        brand: [],
+        length: [],
+        ring: [],
+        strength: [],
+        origin: [],
+        shape: []
     });
 
     useEffect(() => {
@@ -51,6 +59,7 @@ const Filters = ({ selectedFilters, setSelectedFilters }) => {
     }, []);
 
     const handleFilterChange = (event, newValue, attribute) => {
+        onFilterChange({ ...selectedFilters, [attribute]: newValue });
         setSelectedFilters({ ...selectedFilters, [attribute]: newValue })
     };
 
