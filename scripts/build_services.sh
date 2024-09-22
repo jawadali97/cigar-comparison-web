@@ -66,13 +66,39 @@ function stop_services() {
     pm2_proc_exists=$?
     #  tryexec sudo systemctl stop mongod.service
     # tryexec sudo systemctl stop nginx
-    [[ $pm2_proc_exists -eq 0 ]] && tryexec sudo pm2 delete cigarmatrix-api
-#   free_port 27017
-#   free_port 80
-#   free_port 3000
+    # [[ $pm2_proc_exists -eq 0 ]] && tryexec sudo pm2 delete cigarmatrix-api
+    if [[ $pm2_proc_exists -eq 0 ]]; then 
+        tryexec sudo pm2 delete cigarmatrix-api
+    fi
+    # free_port 27017
+    # free_port 80
+    # free_port 3000
 }
 
-stop_services
-build_api
-setup_nginx
-build_ui
+function main() {
+    if [[ $# -eq 0 ]]; then
+        stop_services
+        build_api
+        setup_nginx
+        build_ui
+    else
+        case "$1" in
+            -a) 
+                stop_services
+                build_api 
+                ;;
+            -u) 
+                build_ui 
+                ;;
+            -ng) 
+                setup_nginx 
+                ;;
+            *) 
+                echo "Invalid argument: $1. Valid arguments are '-a' for build_api, '-u' for build_ui, '-ng' for setup_nginx." 
+                exit 1
+                ;;
+        esac
+    fi
+}
+
+main "$@"
