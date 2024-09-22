@@ -37,3 +37,13 @@ export const capitalize = (str) => {
     }
     return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
+
+export const generateShareUrl = (baseURL, source) => {
+    const utmParams = new URLSearchParams({
+        utm_source: source,
+        utm_medium: 'social',
+        utm_campaign: 'cigar_deal_sharing'
+    });
+
+    return encodeURI(`${baseURL}?${utmParams.toString()}`);
+};

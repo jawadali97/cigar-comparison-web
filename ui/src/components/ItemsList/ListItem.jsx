@@ -2,7 +2,7 @@ import { Box, Grid, Link, Typography } from '@mui/material'
 import React from 'react'
 import './ListItem.css'
 import VerticalTable from './VerticalTable'
-import { capitalize } from '../../app.constants'
+import { capitalize, generateShareUrl } from '../../app.constants'
 import {
     FacebookShareButton,
     TwitterShareButton,
@@ -19,7 +19,7 @@ import ShareButtonSMS from '../ShareButtonSMS'
 
 
 const ListItem = ({ item }) => {
-    const shareUrl = encodeURI(`${window.location.origin}/${item._id}`);
+    const shareUrl = `${window.location.origin}/${item._id}`;
     // const shareUrl = encodeURI(`${'https://cigarmatrix.com'}/${item._id}`);
     const title = 'Found a deal on CigarMatrix'
 
@@ -125,39 +125,39 @@ const ListItem = ({ item }) => {
             }}>
                 <FacebookShareButton
                     title={title}
-                    url={shareUrl}
+                    url={generateShareUrl(shareUrl, 'facebook')}
                     className='share-btn'>
                     <FacebookIcon size={25} round />
                 </FacebookShareButton>
                 <TwitterShareButton
-                    url={shareUrl}
+                    url={generateShareUrl(shareUrl, 'twitter')}
                     title={title}
                     className="share-btn"
                 >
                     <XIcon size={25} round />
                 </TwitterShareButton>
                 <WhatsappShareButton
-                    url={shareUrl}
+                    url={generateShareUrl(shareUrl, 'whatsapp')}
                     title={title}
                     className='share-btn'>
                     <WhatsappIcon size={25} round />
                 </WhatsappShareButton>
                 <RedditShareButton
-                    url={shareUrl}
+                    url={generateShareUrl(shareUrl, 'reddit')}
                     title={title}
                     className="share-btn"
                 >
                     <RedditIcon size={25} round />
                 </RedditShareButton>
                 <EmailShareButton
-                    url={shareUrl}
+                    url={generateShareUrl(shareUrl, 'email')}
                     subject={title}
                     body="Hey, I found a great deal on CigarMatrix."
                     className="share-btn"
                 >
                     <EmailIcon size={25} round />
                 </EmailShareButton>
-                <ShareButtonSMS text={title} url={shareUrl} />
+                <ShareButtonSMS text={title} url={generateShareUrl(shareUrl, 'sms')} />
             </Box>
         </Box >
     )
