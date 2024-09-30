@@ -16,6 +16,7 @@ import {
     EmailIcon
 } from 'react-share'
 import ShareButtonSMS from '../ShareButtonSMS'
+import CopyToClipboard from '../CopyToClipboard'
 
 
 const ListItem = ({ item }) => {
@@ -142,13 +143,13 @@ const ListItem = ({ item }) => {
                     className='share-btn'>
                     <WhatsappIcon size={25} round />
                 </WhatsappShareButton>
-                <RedditShareButton
+                {/* <RedditShareButton
                     url={generateShareUrl(shareUrl, 'reddit')}
                     title={title}
                     className="share-btn"
                 >
                     <RedditIcon size={25} round />
-                </RedditShareButton>
+                </RedditShareButton> */}
                 <EmailShareButton
                     url={generateShareUrl(shareUrl, 'email')}
                     subject={title}
@@ -158,6 +159,7 @@ const ListItem = ({ item }) => {
                     <EmailIcon size={25} round />
                 </EmailShareButton>
                 <ShareButtonSMS text={title} url={generateShareUrl(shareUrl, 'sms')} />
+                <CopyToClipboard textToCopy={shareUrl} />
             </Box>
         </Box >
     )
